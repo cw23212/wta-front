@@ -8,19 +8,19 @@ const checkbox = ref(false);
 const valid = ref(false);
 const show1 = ref(false);
 //const logform = ref();
-// const password = ref('admin123');
+const password = ref('admin123');
 const username = ref('info@codedthemes.com');
-// const passwordRules = ref([
-//   (v: string) => !!v || 'Password is required',
-//   (v: string) => (v && v.length <= 10) || 'Password must be less than 10 characters'
-// ]);
+const passwordRules = ref([
+  (v: string) => !!v || 'Password is required',
+  (v: string) => (v && v.length <= 10) || 'Password must be less than 10 characters'
+]);
 const emailRules = ref([(v: string) => !!v || 'E-mail is required', (v: string) => /.+@.+\..+/.test(v) || 'E-mail must be valid']);
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 function validate(values: any, { setErrors }: any) {
   const authStore = useAuthStore();
-  //return authStore.login(username.value,// password.value).catch((error) => setErrors({ apiError: error }));
-  return authStore.login(username.value).catch((error) => setErrors({ apiError: error }));
+  return authStore.login(username.value, password.value).catch((error) => setErrors({ apiError: error }));
+  //return authStore.login(username.value).catch((error) => setErrors({ apiError: error }));
 }
 </script>
 
@@ -38,7 +38,7 @@ function validate(values: any, { setErrors }: any) {
       variant="outlined"
       color="primary"
     ></v-text-field>
-    <!-- <v-text-field
+    <v-text-field
       v-model="password"
       :rules="passwordRules"
       label="Password"
@@ -51,7 +51,7 @@ function validate(values: any, { setErrors }: any) {
       :type="show1 ? 'text' : 'password'"
       @click:append="show1 = !show1"
       class="pwdInput"
-    ></v-text-field> -->
+    ></v-text-field>
 
     <div class="d-sm-flex align-center mt-2 mb-7 mb-sm-0">
       <v-checkbox
