@@ -8,10 +8,10 @@ const email = ref('');
 const Regform = ref();
 const firstname = ref('');
 const lastname = ref('');
-const passwordRules = ref([
-  (v: string) => !!v || 'Password is required',
-  (v: string) => (v && v.length <= 10) || 'Password must be less than 10 characters'
-]);
+// const passwordRules = ref([
+//   (v: string) => !!v || 'Password is required',
+//   (v: string) => (v && v.length <= 10) || 'Password must be less than 10 characters'
+// ]);
 const emailRules = ref([(v: string) => !!v || 'E-mail is required', (v: string) => /.+@.+\..+/.test(v) || 'E-mail must be valid']);
 
 function validate() {
@@ -20,17 +20,6 @@ function validate() {
 </script>
 
 <template>
-  <v-btn block color="primary" variant="outlined" class="text-lightText googleBtn">
-    <img :src="Google" alt="google" />
-    <span class="ml-2">Sign up with Google</span></v-btn
-  >
-  <v-row>
-    <v-col class="d-flex align-center">
-      <v-divider class="custom-devider" />
-      <v-btn variant="outlined" class="orbtn" rounded="md" size="small">OR</v-btn>
-      <v-divider class="custom-devider" />
-    </v-col>
-  </v-row>
   <h5 class="text-h5 text-center my-4 mb-8">Sign up with Email address</h5>
   <v-form ref="Regform" lazy-validation action="/dashboards/analytical" class="mt-7 loginForm">
     <v-row>
@@ -66,7 +55,7 @@ function validate() {
       variant="outlined"
       color="primary"
     ></v-text-field>
-    <v-text-field
+    <!-- <v-text-field
       v-model="password"
       :rules="passwordRules"
       label="Password"
@@ -79,7 +68,7 @@ function validate() {
       :type="show1 ? 'text' : 'password'"
       @click:append="show1 = !show1"
       class="pwdInput"
-    ></v-text-field>
+    ></v-text-field> -->
 
     <div class="d-sm-inline-flex align-center mt-2 mb-7 mb-sm-0 font-weight-bold">
       <v-checkbox

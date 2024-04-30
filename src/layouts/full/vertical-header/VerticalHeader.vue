@@ -7,7 +7,6 @@ import { BellIcon, SettingsIcon, SearchIcon, Menu2Icon } from 'vue-tabler-icons'
 // dropdown imports
 import NotificationDD from './NotificationDD.vue';
 import ProfileDD from './ProfileDD.vue';
-import Searchbar from './SearchBarPanel.vue';
 
 const customizer = useCustomizerStore();
 const showSearch = ref(false);

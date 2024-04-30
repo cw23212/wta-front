@@ -94,6 +94,7 @@ const sidebarItem: menu[] = [
     ]
   },
   { divider: true },
+  { header: 'Others' },
   {
     title: 'Sample Page',
     icon: BrandChromeIcon,
