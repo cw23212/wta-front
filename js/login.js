@@ -1,4 +1,3 @@
-
 function setupLogin() {
     const loginButton = document.querySelector(".loginButton");
   
@@ -6,11 +5,9 @@ function setupLogin() {
       loginButton.addEventListener("click", function(event) {
         event.preventDefault(); // 기본 동작(폼 제출) 방지
         const userIdInput = document.getElementById("userIdInput");
-        const userId = userIdInput.value;
-        validate(userId);
+        const userIdValue = userIdInput.value;
+        validate(userIdValue);
       });
-    } else {
-      console.error("loginButton이 HTML에 존재하지 않습니다.");
     }
 }
 
@@ -28,6 +25,8 @@ function validate(userId) {
       })
       .then(data => {
         console.log("id : " + data.id);
+        sessionStorage.setItem('userId', data.id);
+        sessionStorage.setItem('useName', data.name);
         window.location.href = 'index.html';
       });
   }

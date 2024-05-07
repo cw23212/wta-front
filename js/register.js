@@ -1,3 +1,5 @@
+import {user} from './login.js';
+
 function setupRegister() {
     const registerButton = document.querySelector(".registerButton");
   
@@ -17,8 +19,9 @@ function setupRegister() {
   
   function signUp(userId) {
     const url = `http://n2.psj2867.com:18080/api/user/signup`;
-  
-    return fetch(url, {method : "POST", body: JSON.stringify(userId), headers:{"Content-Type": "application/json"}})
+    const data = {name: userId}
+
+    return fetch(url, {method : "POST", body: JSON.stringify(data), headers:{"Content-Type": "application/json"}})
     .then(response => {
       if (!response.ok) {
         console.log("회원가입 실패");
@@ -28,6 +31,11 @@ function setupRegister() {
     })
     .then(data => {
       console.log("id : " + data.id);
+      userId = data.id;
       window.location.href = 'index.html';
     })
   }
+
+  window.onload = function(){
+    setupRegister();
+}

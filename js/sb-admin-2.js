@@ -1,3 +1,7 @@
+import { userId } from "./login";
+
+console.log(userId)
+
 (function($) {
   "use strict"; // Start of use strict
 
