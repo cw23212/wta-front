@@ -2,7 +2,7 @@ function setupLogin() {
     const loginButton = document.querySelector(".loginButton");
   
     if (loginButton) {
-      loginButton.addEventListener("click", function(event) {
+        loginButton.addEventListener("click", function(event) {
         event.preventDefault(); // 기본 동작(폼 제출) 방지
         const userIdInput = document.getElementById("userIdInput");
         const userIdValue = userIdInput.value;

@@ -252,17 +252,17 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">작품 관리</h1>
+                    <h1 class="h3 mb-2 text-gray-800">회차 관리</h1>
                     <div class="row mb-3">
                         <div class="col">
-                            <button style="float: right;" class="btn btn-primary"data-toggle="modal" data-target="#addContentModal">작품 추가</button>
+                            <button style="float: right;" class="btn btn-primary"data-toggle="modal" data-target="#addContentModal">회차 추가</button>
                         </div>
                     </div>
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">작품 목록</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">회차 목록</h6>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -270,9 +270,9 @@
                                     <thead>
                                         <tr>
                                             <th>작품 이름</th>
-                                            <th>작품 URL</th>
-                                            <th>회차 관리</th>
-                                            <th>작품 삭제</th>
+                                            <th>회차 이름</th>
+                                            <th>회차 URL</th>
+                                            <th>회차 삭제</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -335,8 +335,8 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <input type="text" class="form-control bg-light border-0 small mb-3" id = "contentName" placeholder="작품 이름 입력">
-                    <input type="text" class="form-control bg-light border-0 small" id = "contentUrl" placeholder="URL 입력">
+                    <input type="text" class="form-control bg-light border-0 small mb-3" id = "contentName" placeholder="회차 이름 입력">
+                    <input type="text" class="form-control bg-light border-0 small" id = "contentUrl" placeholder="회차 URL 입력">
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-danger" type="button" data-dismiss="modal">취소</button>
@@ -365,5 +365,5 @@
 
 </body>
 
-<script type="module" src="js/manageContents.js"></script>
+<script type="module" src="js/manageChapters.js"></script>
 </html>
