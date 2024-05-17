@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+  <head>
+    <title></title>
+  </head>
+  <body style="height: 100%">
+    <img src="" id="screen" style="visibility: hidden" />
+    <div id="canvas" style="height: 100%; width: 60%"></div>
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script
+      type="text/javascript"
+      src="https://i2djs.github.io/I2Djs/dist/i2d.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="node_modules/visual-heatmap/dist/visualHeatmap.js"
+    ></script>
+
+    <script type="text/javascript">
+      let datas = [];
+      let imgUrl = `http://dev.psj2867.com:18080/api/data/screen?id=${encodeURIComponent(
+        1
+      )}`;
+      let screenX;
+      let screenY;
+
+      function changeImg(img, src) {
+        return new Promise((resolve, reject) => {
+          img.onload = () => resolve(img);
+          img.onerror = reject;
+          img.crossOrigin = "annonymous";
+          img.src = src;
+        });
+      }
+      async function f1() {
+        const url = `http://n2.psj2867.com:18080/api/data/eye/chapter?id=${encodeURIComponent(
+          1
+        )}`;
+        await changeImg(screen, imgUrl);
+        screenX = screen.width;
+        screenY = screen.height;
+        // screen.src = "";
+        let data = await fetch(url);
+        data = generateData(await data.json());
+        let instance = makeInstance(screenX, screenY);
+        instance.renderData(data);
+      }
+      const screen = document.getElementById("screen");
+      function makeInstance(screenX, screenY) {
+        let instance = visualHeatmap("#canvas", {
+          size: 15.0,
+          max: 100,
+          intensity: 1.0,
+          backgroundImage: {
+            url: imgUrl,
+            height: screenY,
+            width: screenX,
+            x: 0,
+            y: 0,
+          },
+          gradient: [
+            {
+              color: [0, 0, 0, 0.0],
+              offset: 0,
+            },
+            {
+              color: [0, 0, 255, 0.2],
+              offset: 0.2,
+            },
+            {
+              color: [0, 255, 0, 0.5],
+              offset: 0.45,
+            },
+            {
+              color: [255, 255, 0, 1.0],
+              offset: 0.85,
+            },
+            {
+              color: [255, 0, 0, 1.0],
+              offset: 1.0,
+            },
+          ],
+        });
+
+        var ParamsCon = function () {
+          this.size = 50;
+          this.opacity = 1.0;
+          this.intensity = 1.0;
+          this.transalteX = 0;
+          this.transalteY = 0;
+          this.zoom = 1.0;
+          this.rotationAngle = 0.0;
+          this.updateLabels = function () {
+            updateLabelPos();
+          };
+        };
+
+        var params = new ParamsCon();
+
+        // rendering labels
+        let webglRenderer = i2d.webglLayer(
+          "#canvas",
+          {
+            alpha: true,
+          },
+          {}
+        );
+
+        let labels = webglRenderer
+          .createEl({
+            el: "group",
+            attr: {
+              shaderType: "text",
+            },
+            bbox: false,
+          })
+          .createEls(data, {
+            el: "text",
+            attr: {
+              text: function (d) {
+                return d.label;
+              },
+              x: function (d) {
+                let pos = instance.projection(d);
+                return pos.x - 25;
+              },
+              y: function (d) {
+                let pos = instance.projection(d);
+                return pos.y + 10;
+              },
+            },
+            style: {
+              font: "12px Arial",
+              fillStyle: function () {
+                return "hsl(" + Math.round(Math.random() * 360) + ",100%, 50%)";
+              },
+            },
+          });
+
+        function updateLabelPos() {
+          labels.forEach(function (d) {
+            let pos = instance.projection(d);
+            this.setAttr("x", pos.x - 25);
+            this.setAttr("y", pos.y + 10);
+          });
+        }
+
+        return instance;
+      }
+
+      function generateData(data) {
+        var datas = [];
+        let val = 1;
+        for (let i = 0; i < data.length; i++) {
+          let val = Math.random() * 100;
+          datas.push({
+            x: data[i].ratioX * screenX,
+            y: data[i].ratioY * screenY,
+            velX: random(0, 0),
+            velY: random(0, 0),
+            value: val,
+            label: "label_" + i,
+          });
+        }
+        return datas;
+      }
+
+      function random(min, max) {
+        var num = Math.random() * (max - min) + min;
+        return num;
+      }
+      screen.src = "";
+      f1();
+    </script>
+  </body>
+</html>
