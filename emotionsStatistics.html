@@ -52,7 +52,7 @@
             <div
               class="d-sm-flex align-items-center justify-content-between mb-4"
             >
-              <h1 class="h3 mb-0 text-gray-800">작품 종합 통계</h1>
+              <h1 class="h3 mb-0 text-gray-800">표정 스캐터 차트</h1>
             </div>
 
             <div class="row d-flex justify-content-center">
@@ -64,87 +64,18 @@
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
                   >
                     <h6 class="m-0 font-weight-bold text-primary">
-                        가장 많이 본 화면
+                      표정 스캐터 차트
                     </h6>
                   </div>
                   <!-- img body -->
-                  <div style="height: 300px"></div>
-                </div>
-              </div>
-
-              <!-- 가장 적게 본 화면 -->
-              <div class="col-xl-4 col-lg-7">
-                <div class="card shadow mb-4">
-                  <!-- Card Header - Dropdown -->
-                  <div
-                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
-                  >
-                    <h6 class="m-0 font-weight-bold text-primary">
-                        가장 적게 본 화면
-                    </h6>
+                  <div class="card-body">
+                    <div class="">
+                      <canvas id="myScatterChart" style="height: 1000px;"></canvas>
+                    </div>
                   </div>
-                  <!-- img body -->
-                  <div style="height: 300px"></div>
-                </div>
-              </div>
-
-              <div class="col-xl-4 col-lg-7">
-                <div class="card shadow mb-4">
-                  <!-- Card Header - Dropdown -->
-                  <div
-                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
-                  >
-                    <h6 class="m-0 font-weight-bold text-primary">
-                        가장 감정 변화가 큰 화면
-                    </h6>
-                  </div>
-                  <!-- img body -->
-                  <div style="height: 300px"></div>
                 </div>
               </div>
             </div>
-            <!-- Content Row -->
-
-            <div class="row d-flex justify-content-center">
-              <!-- Area Chart -->
-              <div class="col-xl-4 col-lg-7">
-                <div class="card shadow mb-4">
-                  <!-- Card Header - Dropdown -->
-                  <div
-                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
-                  >
-                    <h6 class="m-0 font-weight-bold text-primary">
-                      사용자가 머문 시간
-                    </h6>
-                  </div>
-                  <!-- Card Body -->
-                  <div class="card-body">
-                    <div class="chart-area">
-                      <canvas id="myAreaChart"></canvas>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-xl-4 col-lg-7">
-                <div class="card shadow mb-4">
-                  <!-- Card Header - Dropdown -->
-                  <div
-                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
-                  >
-                    <h6 class="m-0 font-weight-bold text-primary">
-                      평균 감정 비율
-                    </h6>
-                  </div>
-                  <!-- Card Body -->
-                  <div class="card-body">
-                    <div class="chart-area">
-                      <canvas id="myAreaChart2"></canvas>
-                    </div>
-                  </div>
-                </div>
-              </div>
-          </div>
           <!-- /.container-fluid -->
         </div>
         <!-- End of Main Content -->
@@ -219,8 +150,6 @@
     <script src="vendor/chart.js/Chart.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="js/demo/chart-area-demo.js"></script>
-    <script src="js/demo/chart-bar-demo.js"></script>
-    <script src="js/demo/chart-pie-demo.js"></script>
+    <script src="js/demo/chart-scatter.js"></script>
   </body>
 </html>
