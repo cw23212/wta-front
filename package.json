@@ -5,6 +5,8 @@
     "babel-cli": "^6.26.0"
   },
   "dependencies": {
+    "chart.js": "^4.4.3",
+    "chartjs-chart-geo": "^4.3.0",
     "visual-heatmap": "^2.1.0"
   }
 }
