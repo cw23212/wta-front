@@ -3,8 +3,11 @@ const chapterId = sessionStorage.getItem('chapterId');
 document.addEventListener('DOMContentLoaded', function() {
     // Fetching the JSON data and initializing the chart
     const url1 = `http://n2.psj2867.com:18080/api/data/main/duration/chapter?id=${encodeURIComponent(chapterId)}`;
-    const url2 = `http://n2.psj2867.com:18080/api/data/exp/sum/chapter?id=${encodeURIComponent(chapterId)}`;
+    const url2 = `http://n2.psj2867.com:18080/api/data/exp/mean/chapter?id=${encodeURIComponent(chapterId)}`;
     const url3 = `http://n2.psj2867.com:18080/api/data/main/exit/page?id=${encodeURIComponent(chapterId)}`;
+    const url4 = `http://n2.psj2867.com:18080/api/data/main/most/page?id=${encodeURIComponent(chapterId)}`;
+    const urlMost = `http://n2.psj2867.com:18080/api/data/main/most/page?id=${encodeURIComponent(chapterId)}`;
+    const urlLeast = `http://n2.psj2867.com:18080/api/data/main/least/page?id=${encodeURIComponent(chapterId)}`;
 
     fetch(url1)
         .then(response => response.json())
@@ -55,6 +58,131 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log(data);
         })
         .catch(error => console.error('Error fetching data:', error));
+    
+    // meta data 요청
+    let sid;
+    let start;
+    let end;
+    let width;
+    let height;
+    let canvasId;
+
+    fetch(urlMost)
+        .then(response => response.json())
+        .then(data => {
+            start = parseInt(data.data[0].start);
+            end = parseInt(data.data[0].end);
+            sid = data.file.sid;
+            width = parseInt(data.file.width);
+            height = parseInt(data.file.height);
+            canvasId = 'imageMost';
+            showLoadingAnimation(canvasId);
+            requestImage(sid, start, end, width, canvasId);
+        })
+        .catch(error => console.error('Error fetching data:', error));
+    
+    fetch(urlLeast)
+        .then(response => response.json())
+        .then(data => {
+            start = parseInt(data.data[0].start);
+            end = parseInt(data.data[0].end);
+            sid = data.file.sid;
+            width = parseInt(data.file.width);
+            height = parseInt(data.file.height);
+            canvasId = 'imageLeast';
+            showLoadingAnimation(canvasId);
+            requestImage(sid, start, end, width, canvasId);
+        })
+        .catch(error => console.error('Error fetching data:', error));
+
+        function showLoadingAnimation(canvasId) {
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+        
+            canvas.id = canvasId + 'loading';
+            canvas.width = 50;
+            canvas.height = 50;
+        
+            // 로딩 중 애니메이션 스타일 및 그리기
+            context.strokeStyle = '#888'; // 회색으로 변경
+            context.lineWidth = 8;
+            context.lineCap = 'round';
+        
+            const x = canvas.width / 2;
+            const y = canvas.height / 2;
+            const radius = 20;
+            const endAngle = Math.PI * 1.5;
+        
+            let currentAngle = 0;
+            const interval = setInterval(() => {
+                context.clearRect(0, 0, canvas.width, canvas.height);
+                context.beginPath();
+                context.arc(x, y, radius, currentAngle, currentAngle + Math.PI / 4);
+                context.stroke();
+                currentAngle += Math.PI / 20;
+                if (currentAngle >= endAngle) {
+                    currentAngle = 0;
+                }
+            }, 30); // 속도를 높임 (기존 100에서 50으로 변경)
+        
+            // 로딩 중 애니메이션을 화면 중앙에 추가
+            const parentDiv = document.getElementById(canvasId).parentElement;
+            parentDiv.style.position = 'relative'; // 부모 요소의 position을 relative로 변경
+            canvas.style.position = 'absolute';
+            canvas.style.top = '50%';
+            canvas.style.left = '50%';
+            canvas.style.transform = 'translate(-50%, -50%)';
+        
+            parentDiv.appendChild(canvas);
+        }
+    
+
+    function requestImage(sid, start, end, width, canvasId) {
+        let imageData = null;
+        fetch(`http://n2.psj2867.com:18080/api/data/screen/image?sid=${sid}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.blob();
+            })
+            .then(blob => {
+                imageData = URL.createObjectURL(blob);
+                cutImage(start, end, width, imageData, canvasId);
+            })
+            .catch(error => console.error('Error fetching image:', error));
+        }
+
+    function cutImage(start, end, width, imageData, canvasId)
+    {
+        const img = new Image();
+        img.onload = () => {
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+
+            const cropHeight = end - start;
+            canvas.width = width;
+            canvas.height = cropHeight;
+
+            context.drawImage(img, 0, start, width, cropHeight, 0, 0, width, cropHeight);
+
+            const imageDiv = document.getElementById(canvasId);
+            imageDiv.innerHTML = '';
+
+            imageDiv.appendChild(canvas);
+
+            canvas.style.maxWidth = '100%';
+            canvas.style.height = 'auto';
+
+            let id = canvasId + 'loading';
+            const loadingCanvas = document.getElementById(id);
+            if (loadingCanvas) {
+                const parentDiv = loadingCanvas.parentElement;
+                parentDiv.removeChild(loadingCanvas);
+            }
+        };
+        img.src = imageData;
+    }
 
     // Create the chart with the processed data
     function createOnPageChart(data) {
