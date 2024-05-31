@@ -78,10 +78,8 @@ document.addEventListener("DOMContentLoaded", function () {
     screenX = imgElement.width;
     screenY = imgElement.height;
 
-    const heatmapURL = `http://n2.psj2867.com:18080/api/data/eye/heatmap/chapter?id=${encodeURIComponent(
+    const heatmapURL = `http://n2.psj2867.com:18080/api/data/eye/raw/chapter?id=${encodeURIComponent(
       chapterId
-    )}&width=${encodeURIComponent(screenX)}&height=${encodeURIComponent(
-      screenY
     )}`;
 
     fetch(heatmapURL)
