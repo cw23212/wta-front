@@ -1,5 +1,9 @@
 Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 Chart.defaults.global.defaultFontColor = '#858796';
+const chapterId = sessionStorage.getItem("chapterId");
+const url = `http://n2.psj2867.com:18080/api/data/screen/meta?id=${encodeURIComponent(
+  chapterId
+)}`;
 
 function number_format(number, decimals, dec_point, thousands_sep) {
     // *     example: number_format(1234.56, 2, ',', ' ');
@@ -52,113 +56,108 @@ function number_format(number, decimals, dec_point, thousands_sep) {
       return s.join(dec);
   }
 
-  // 배경 이미지를 그리는 플러그인
-  const backgroundPlugin = {
-    beforeDraw: function(chart) {
-      if (chart.config.options.chartArea && chart.config.options.chartArea.backgroundColor) {
-        const ctx = chart.chart.ctx;
-        const chartArea = chart.chartArea;
-        ctx.save();
-        ctx.fillStyle = chart.config.options.chartArea.backgroundColor;
-        ctx.fillRect(chartArea.left, chartArea.top, chartArea.right - chartArea.left, chartArea.bottom - chartArea.top);
-        ctx.restore();
-      }
-    }
-  };
 
-  // 플러그인 등록
-  Chart.plugins.register(backgroundPlugin);
 
-  var ctx = document.getElementById("myScatterChart").getContext('2d');
-  var backgroundImage = new Image();
-  backgroundImage.src = 'js/demo/test.png'; // 이미지 경로를 여기에 입력하세요.
-
-  backgroundImage.onload = function() {
-    var myScatterChart = new Chart(ctx, {
-      type: 'scatter',
-      data: {
-        datasets: [{
-          label: 'Sample Scatter Data',
-          backgroundColor: "rgba(78, 115, 223, 0.05)",
-          borderColor: "rgba(78, 115, 223, 1)",
-          pointRadius: 5,
-          pointBackgroundColor: "rgba(251, 80, 80, 1)",
-          pointBorderColor: "rgba(251, 80, 80, 1)",
-          pointHoverRadius: 7,
-          pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
-          pointHoverBorderColor: "rgba(78, 115, 223, 1)",
-          pointHitRadius: 10,
-          pointBorderWidth: 2,
-          data: [
-            {x: 10, y: 20},
-            {x: 15, y: 10},
-            {x: 20, y: 30},
-            {x: 25, y: 25},
-            {x: 30, y: 35},
-            {x: 35, y: 40},
-            {x: 40, y: 20},
-            {x: 45, y: 50}
-          ]
-        }]
-      },
-      options: {
-        maintainAspectRatio: false,
-        chartArea: {
-          backgroundColor: ctx.createPattern(backgroundImage, 'repeat') // 이미지 패턴 설정
-        },
-        scales: {
-          xAxes: [{
-            type: 'linear',
-            position: 'bottom',
-            gridLines: {
-              display: true,
-              drawBorder: false
-            },
-            ticks: {
-              maxTicksLimit: 7
-            }
-          }],
-          yAxes: [{
-            ticks: {
-              maxTicksLimit: 5,
-              padding: 10,
-              callback: function(value, index, values) {
-                return '$' + value;
+  document.addEventListener("DOMContentLoaded", function () {
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          const sid = data.sid;
+          const width = parseInt(data.width);
+          const height = parseInt(data.height);
+          console.log(width, height);
+          
+          document.querySelector(".canvas").style.width = `${width + 100}px`;
+          document.querySelector(".canvas").style.height = `${height + 50}px`;
+  
+          const ctx = document.getElementById("myScatterChart").getContext('2d');
+          const image = new Image();
+          image.src = `http://n2.psj2867.com:18080/api/data/screen/image?sid=${sid}`;
+  
+          image.onload = function() {
+            const plugin = {
+              id: 'customCanvasBackgroundImage',
+              beforeDraw: (chart) => {
+                if (image.complete) {
+                  const {left, top, width: chartWidth, height: chartHeight} = chart.chartArea;
+                  const x = left;
+                  const y = top;
+                  ctx.drawImage(image, x, y, width, height);
+                }
               }
-            },
-            gridLines: {
-              color: "rgb(234, 236, 244)",
-              zeroLineColor: "rgb(234, 236, 244)",
-              drawBorder: false,
-              borderDash: [2],
-              zeroLineBorderDash: [2]
-            }
-          }],
-        },
-        legend: {
-          display: false
-        },
-        tooltips: {
-          backgroundColor: "rgb(255,255,255)",
-          bodyFontColor: "#858796",
-          titleMarginBottom: 10,
-          titleFontColor: '#6e707e',
-          titleFontSize: 14,
-          borderColor: '#dddfeb',
-          borderWidth: 1,
-          xPadding: 15,
-          yPadding: 15,
-          displayColors: false,
-          intersect: false,
-          mode: 'index',
-          caretPadding: 10,
-          callbacks: {
-            label: function(tooltipItem, chart) {
-              var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-              return datasetLabel + ': $' + tooltipItem.yLabel;
-            }
-          }
-        }
-      }
-    });
-}
+            };
+  
+            new Chart(ctx, {
+              type: 'scatter',
+              data: {
+                datasets: [{
+                  label: '감정',
+                  backgroundColor: "rgba(78, 115, 223, 0.05)",
+                  borderColor: "rgba(78, 115, 223, 1)",
+                  pointRadius: 5,
+                  pointBackgroundColor: "rgba(251, 80, 80, 1)",
+                  pointBorderColor: "rgba(251, 80, 80, 1)",
+                  pointHoverRadius: 7,
+                  pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+                  pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+                  pointHitRadius: 10,
+                  pointBorderWidth: 2,
+                  data: [
+                    {x: 1, y: 5, emotion: 'happy'},
+                    {x: 2, y: 3, emotion: 'sad'},
+                    {x: 3, y: 4, emotion: 'neutral'},
+                    {x: 4, y: 2, emotion: 'angry'},
+                    {x: 5, y: 6, emotion: 'test'}
+                  ]
+                }]
+              },
+              plugins: [plugin],
+              options: {
+                maintainAspectRatio: false,
+                scales: {
+                  xAxes: [{
+                    type: 'linear',
+                    position: 'bottom',
+                    gridLines: {
+                      display: true,
+                      drawBorder: false
+                    },
+                    ticks: {
+                      maxTicksLimit: 7
+                    }
+                  }],
+                  yAxes: [{
+                    ticks: {
+                      maxTicksLimit: 5,
+                      padding: 10,
+                      callback: function(value) {
+                        return '$' + value;
+                      }
+                    },
+                    gridLines: {
+                      color: "rgb(234, 236, 244)",
+                      zeroLineColor: "rgb(234, 236, 244)",
+                      drawBorder: false,
+                      borderDash: [2],
+                      zeroLineBorderDash: [2]
+                    }
+                  }],
+                },
+                legend: {
+                  display: false
+                },
+                tooltips: {
+                  callbacks: {
+                    label: function(tooltipItem, data) {
+                      var datasetLabel = data.datasets[tooltipItem.datasetIndex].label || '';
+                      var emotion = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].emotion;
+                      return datasetLabel + ': ' + ' (' + emotion + ')';
+                    }
+                  }
+                }
+              }
+            });
+          };
+        })
+  });
+  

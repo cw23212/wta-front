@@ -6410,6 +6410,10 @@ a.close.disabled {
   vertical-align: text-top !important;
 }
 
+.bg-purple {
+  background-color: #7431f9 !important;
+}
+
 .bg-primary {
   background-color: #4e73df !important;
 }
