@@ -7,6 +7,7 @@ let sid;
 let width;
 let height;
 let id;
+let instance;
 
 document.addEventListener("DOMContentLoaded", function () {
   fetch(url)
@@ -15,63 +16,53 @@ document.addEventListener("DOMContentLoaded", function () {
       sid = data.sid;
       width = parseInt(data.width);
       height = parseInt(data.height);
+      console.log(width, height);
       id = "screen";
 
-      requestImage(sid, id);
+      document.querySelector("#canvas").style.width = `${width + 100}px`;
+      document.querySelector("#canvas").style.height = `${height + 50}px`;
+
+      // requestImage(sid, id);
+      drawHeatmap();
+      instance = visualHeatmap("#canvas", {
+        size: 50.0,
+        max: 100,
+        intensity: 1.0,
+        opacity: 0.7,
+        backgroundImage: {
+          url: `http://n2.psj2867.com:18080/api/data/screen/image?sid=${sid}`,
+          x: 0,
+          y: 0,
+          width: width,
+          height: height,
+        },
+        gradient: [
+          {
+            color: [0, 0, 0, 0.0],
+            offset: 0,
+          },
+          {
+            color: [0, 0, 255, 0.2],
+            offset: 0.2,
+          },
+          {
+            color: [0, 255, 0, 0.5],
+            offset: 0.45,
+          },
+          {
+            color: [255, 255, 0, 1.0],
+            offset: 0.85,
+          },
+          {
+            color: [255, 0, 0, 1.0],
+            offset: 1.0,
+          },
+        ],
+      });
     })
     .catch((error) => console.error("Error fetching data:", error));
 
-  function requestImage(sid, id) {
-    let imageData = null;
-
-    fetch(`http://n2.psj2867.com:18080/api/data/screen/image?sid=${sid}`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.blob();
-      })
-      .then((blob) => {
-        imageData = URL.createObjectURL(blob);
-        document.querySelector("#imgDiv").style.width = `${width + 100}px`;
-        document.querySelector(".card-body").style.height = `${height + 50}px`;
-        const imgElement = document.getElementById(id);
-        imgElement.src = imageData;
-        imgElement.onload = () => {
-          drawHeatmap();
-        };
-      })
-      .catch((error) => console.error("Error fetching image:", error));
-  }
-
   let data = [];
-  let instance = visualHeatmap("#canvas", {
-    size: 15.0,
-    max: 100,
-    intensity: 1.0,
-    gradient: [
-      {
-        color: [0, 0, 0, 0.0],
-        offset: 0,
-      },
-      {
-        color: [0, 0, 255, 0.2],
-        offset: 0.2,
-      },
-      {
-        color: [0, 255, 0, 0.5],
-        offset: 0.45,
-      },
-      {
-        color: [255, 255, 0, 1.0],
-        offset: 0.85,
-      },
-      {
-        color: [255, 0, 0, 1.0],
-        offset: 1.0,
-      },
-    ],
-  });
 
   function drawHeatmap() {
     let imgElement = document.getElementById(id);
@@ -85,52 +76,23 @@ document.addEventListener("DOMContentLoaded", function () {
     fetch(heatmapURL)
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         let heatmapData = generateData(data);
         instance.renderData(heatmapData);
       })
       .catch((error) => console.error("히트맵 데이터 가져오기 오류:", error));
   }
 
-  function makeInstance(screenX, screenY) {
-    let instance = visualHeatmap("#canvas", {
-      size: 15.0,
-      max: 100,
-      intensity: 1.0,
-      gradient: [
-        {
-          color: [0, 0, 0, 0.0],
-          offset: 0,
-        },
-        {
-          color: [0, 0, 255, 0.2],
-          offset: 0.2,
-        },
-        {
-          color: [0, 255, 0, 0.5],
-          offset: 0.45,
-        },
-        {
-          color: [255, 255, 0, 1.0],
-          offset: 0.85,
-        },
-        {
-          color: [255, 0, 0, 1.0],
-          offset: 1.0,
-        },
-      ],
-    });
-
-    return instance;
-  }
-
   function generateData(data) {
     var datas = [];
-    let val = 1;
+    let val = 30;
+    const maxRatioY = getMaxRatioY(data);
+    console.log(maxRatioY);
     for (let i = 0; i < data.length; i++) {
       let val = Math.random() * 100;
       datas.push({
-        x: data[i].ratioX * screenX,
-        y: data[i].ratioY * screenY,
+        x: data[i].ratioX * width,
+        y: data[i].ratioY * height,
         velX: random(0, 0),
         velY: random(0, 0),
         value: val,
@@ -138,6 +100,19 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
     return datas;
+  }
+
+  function getMaxRatioY(data) {
+    if (!Array.isArray(data) || data.length === 0) {
+      throw new Error("Input must be a non-empty array");
+    }
+
+    return data.reduce((max, item) => {
+      if (item.ratioY > max) {
+        return item.ratioY;
+      }
+      return max;
+    }, -Infinity);
   }
 
   function random(min, max) {
