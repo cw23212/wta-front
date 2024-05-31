@@ -7,6 +7,8 @@
   "dependencies": {
     "chart.js": "^4.4.3",
     "chartjs-chart-geo": "^4.3.0",
+    "i2djs": "^5.1.2",
     "visual-heatmap": "^2.1.0"
-  }
+  },
+  "type": "module"
 }

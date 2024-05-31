@@ -30,6 +30,14 @@
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet" />
   </head>
+  <script
+      type="text/javascript"
+      src="https://i2djs.github.io/I2Djs/dist/i2d.js"
+    ></script>
+  <script
+      type="text/javascript"
+      src="node_modules/visual-heatmap/dist/visualHeatmap.js"
+    ></script>
 
   <body id="page-top">
     <!-- Page Wrapper -->
@@ -57,7 +65,7 @@
 
             <div class="row d-flex justify-content-center">
               <!-- 가장 많이 본 화면 -->
-              <div class="col-xl-4 col-lg-7">
+              <div class="col-xl-4 col-lg-7" id="imgDiv">
                 <div class="card shadow mb-4">
                   <!-- Card Header - Dropdown -->
                   <div
@@ -68,9 +76,10 @@
                     </h6>
                   </div>
                   <!-- img body -->
-                  <div class="card-body">
+                  <div class="card-body" style="height: auto;">
                     <div class="chart-area">
-                      <canvas id="myBarChart"></canvas>
+                      <img src="" id="screen"/>
+                      <canvas id="canvas"></canvas>
                     </div>
                   </div>
                 </div>
@@ -150,8 +159,6 @@
     <script src="vendor/chart.js/Chart.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="js/demo/chart-area-demo.js"></script>
-    <script src="js/demo/chart-bar-demo.js"></script>
-    <script src="js/demo/chart-pie-demo.js"></script>
+    <script src="js/chart/eyeTrackingChart.js"></script>
   </body>
 </html>
