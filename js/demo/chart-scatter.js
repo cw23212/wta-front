@@ -143,7 +143,7 @@ function number_format(number, decimals, dec_point, thousands_sep) {
         const label = item.emotion;
         const dataset = {
             label: label,
-            data: [{ x: item.x, y: item.y, value: item.value }],
+            data: [{ x: item.x, y: item.y, value: item.value}],
             backgroundColor: getBackgroundColor(label),
             borderColor: getBorderColor(label),
             pointRadius: 5
@@ -184,7 +184,7 @@ function number_format(number, decimals, dec_point, thousands_sep) {
                       label: function(tooltipItem, data) {
                           const dataset = data.datasets[tooltipItem.datasetIndex];
                           const point = dataset.data[tooltipItem.index];
-                          return `${dataset.label}: (값: ${point.value.toFixed(4)})`;
+                          return `${dataset.label}: (값: ${(point.value * 100).toFixed(4)})`;
                       }
                   }
               }
