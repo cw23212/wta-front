@@ -1,4 +1,4 @@
-import {user} from './login.js';
+
 
 function setupRegister() {
     const registerButton = document.querySelector(".registerButton");
