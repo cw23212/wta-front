@@ -18,7 +18,7 @@ function setupRegister() {
   
   
   function signUp(userId) {
-    const url = `http://n2.psj2867.com:18080/api/user/signup`;
+    const url = `https://back.psj2867.com/api/user/signup`;
     const data = {name: userId}
 
     return fetch(url, {method : "POST", body: JSON.stringify(data), headers:{"Content-Type": "application/json"}})

@@ -11,7 +11,7 @@ function statistics(){
 }
 
 $(document).ready(function(){
-    const url = `http://n2.psj2867.com:18080/api/user/me?user=${encodeURIComponent(userId)}`;
+    const url = `https://back.psj2867.com/api/user/me?user=${encodeURIComponent(userId)}`;
     return fetch(url)
       .then(response => {
         if (!response.ok) {

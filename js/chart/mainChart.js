@@ -6,10 +6,10 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Fetching the JSON data and initializing the chart
-  const url1 = `http://n2.psj2867.com:18080/api/data/main/views?id=${encodeURIComponent(
+  const url1 = `https://back.psj2867.com/api/data/main/views?id=${encodeURIComponent(
     userId
   )}`;
-  const url2 = `http://n2.psj2867.com:18080/api/data/main/exps?id=${encodeURIComponent(
+  const url2 = `https://back.psj2867.com/api/data/main/exps?id=${encodeURIComponent(
     userId
   )}`;
 

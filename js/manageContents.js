@@ -6,7 +6,7 @@ let contentId = null;
 let originData = null;
 
 function addContent(name, url){
-  const contentUrl = `http://n2.psj2867.com:18080/api/user/content`
+  const contentUrl = `https://back.psj2867.com/api/user/content`
   const data = {
     user: {
         id: userId,
@@ -33,7 +33,7 @@ function addContent(name, url){
 }
 
 function deleteContent(contentId) {
-  const deleteUrl = `http://n2.psj2867.com:18080/api/user/content`
+  const deleteUrl = `https://back.psj2867.com/api/user/content`
   const data = {
     user: {
         id: userId,
@@ -63,7 +63,7 @@ function manageChapter(){
 }
 
 $(document).ready(function(){
-    const url = `http://n2.psj2867.com:18080/api/user/me?user=${encodeURIComponent(userId)}`;
+    const url = `https://back.psj2867.com/api/user/me?user=${encodeURIComponent(userId)}`;
     return fetch(url)
       .then(response => {
         if (!response.ok) {

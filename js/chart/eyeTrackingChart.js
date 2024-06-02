@@ -1,5 +1,5 @@
 const chapterId = sessionStorage.getItem("chapterId");
-const url = `http://n2.psj2867.com:18080/api/data/screen/meta?id=${encodeURIComponent(
+const url = `https://back.psj2867.com/api/data/screen/meta?id=${encodeURIComponent(
   chapterId
 )}`;
 
@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
         intensity: 1.0,
         opacity: 0.7,
         backgroundImage: {
-          url: `http://n2.psj2867.com:18080/api/data/screen/image?sid=${sid}`,
+          url: `https://back.psj2867.com/api/data/screen/image?sid=${sid}`,
           x: 0,
           y: 0,
           width: width,
@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
     screenX = imgElement.width;
     screenY = imgElement.height;
 
-    const heatmapURL = `http://n2.psj2867.com:18080/api/data/eye/raw/chapter?id=${encodeURIComponent(
+    const heatmapURL = `https://back.psj2867.com/api/data/eye/raw/chapter?id=${encodeURIComponent(
       chapterId
     )}`;
 

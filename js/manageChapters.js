@@ -5,7 +5,7 @@ const chapterName = document.querySelector("#contentName");
 const chapterUrl = document.querySelector("#contentUrl");
 
 function addContent(name, url){
-  const chapterUrl = `http://n2.psj2867.com:18080/api/user/chapter`
+  const chapterUrl = `https://back.psj2867.com/api/user/chapter`
   const data = {
     user: {
         id: userId,
@@ -36,7 +36,7 @@ function addContent(name, url){
 }
 
 function deleteContent(chapterId) {
-  const deleteUrl = `http://n2.psj2867.com:18080/api/user/chapter`
+  const deleteUrl = `https://back.psj2867.com/api/user/chapter`
   const data = {
     user: {
         id: userId,
@@ -73,7 +73,7 @@ function manageChapter(){
 }
 
 $(document).ready(function(){
-    const url = `http://n2.psj2867.com:18080/api/user/me?user=${encodeURIComponent(userId)}`;
+    const url = `https://back.psj2867.com/api/user/me?user=${encodeURIComponent(userId)}`;
     return fetch(url)
       .then(response => {
         if (!response.ok) {

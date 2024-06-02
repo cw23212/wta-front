@@ -2,30 +2,30 @@ const chapterId = sessionStorage.getItem("chapterId");
 
 document.addEventListener("DOMContentLoaded", function () {
   // Fetching the JSON data and initializing the chart
-  const url1 = `http://n2.psj2867.com:18080/api/data/main/duration/chapter?id=${encodeURIComponent(
+  const url1 = `https://back.psj2867.com/api/data/main/duration/chapter?id=${encodeURIComponent(
     chapterId
   )}`;
-  const url2 = `http://n2.psj2867.com:18080/api/data/exp/mean/chapter?id=${encodeURIComponent(
+  const url2 = `https://back.psj2867.com/api/data/exp/mean/chapter?id=${encodeURIComponent(
     chapterId
   )}`;
-  const url3 = `http://n2.psj2867.com:18080/api/data/main/exit/page?id=${encodeURIComponent(
+  const url3 = `https://back.psj2867.com/api/data/main/exit/page?id=${encodeURIComponent(
     chapterId
   )}`;
-  const url4 = `http://n2.psj2867.com:18080/api/data/main/most/page?id=${encodeURIComponent(
+  const url4 = `https://back.psj2867.com/api/data/main/most/page?id=${encodeURIComponent(
     chapterId
   )}`;
-  const urlMost = `http://n2.psj2867.com:18080/api/data/main/most/page?id=${encodeURIComponent(
+  const urlMost = `https://back.psj2867.com/api/data/main/most/page?id=${encodeURIComponent(
     chapterId
   )}`;
-  const urlLeast = `http://n2.psj2867.com:18080/api/data/main/least/page?id=${encodeURIComponent(
+  const urlLeast = `https://back.psj2867.com/api/data/main/least/page?id=${encodeURIComponent(
     chapterId
   )}`;
 
-  const urlHappy = `http://n2.psj2867.com:18080/api/data/exp/most/happy/page?id=${encodeURIComponent(
+  const urlHappy = `https://back.psj2867.com/api/data/exp/most/happy/page?id=${encodeURIComponent(
     chapterId
   )}`
 
-  const urlSad = `http://n2.psj2867.com:18080/api/data/exp/most/sad/page?id=${encodeURIComponent(
+  const urlSad = `https://back.psj2867.com/api/data/exp/most/sad/page?id=${encodeURIComponent(
     chapterId
   )}`
 
@@ -191,7 +191,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function requestImage(sid, start, end, width, canvasId) {
     let imageData = null;
-    fetch(`http://n2.psj2867.com:18080/api/data/screen/image?sid=${sid}`)
+    fetch(`https://back.psj2867.com/api/data/screen/image?sid=${sid}`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");

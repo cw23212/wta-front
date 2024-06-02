@@ -9,12 +9,12 @@ let canvasId;
 
 document.addEventListener('DOMContentLoaded', function() {
     // Fetching the JSON data and initializing the chart
-    const url1 = `http://n2.psj2867.com:18080/api/data/main/duration/content?id=${encodeURIComponent(contentId)}`;
-    const url2 = `http://n2.psj2867.com:18080/api/data/main/viewer/content?id=${encodeURIComponent(contentId)}`;
-    const urlMost = `http://n2.psj2867.com:18080/api/data/main/most/content?id=${encodeURIComponent(contentId)}`;
-    const urlLeast = `http://n2.psj2867.com:18080/api/data/main/least/content?id=${encodeURIComponent(contentId)}`;
-    const urlHappy = `http://n2.psj2867.com:18080/api/data/exp/most/happy/content?id=${encodeURIComponent(contentId)}`;
-    const urlSad = `http://n2.psj2867.com:18080/api/data/exp/most/sad/content?id=${encodeURIComponent(contentId)}`;
+    const url1 = `https://back.psj2867.com/api/data/main/duration/content?id=${encodeURIComponent(contentId)}`;
+    const url2 = `https://back.psj2867.com/api/data/main/viewer/content?id=${encodeURIComponent(contentId)}`;
+    const urlMost = `https://back.psj2867.com/api/data/main/most/content?id=${encodeURIComponent(contentId)}`;
+    const urlLeast = `https://back.psj2867.com/api/data/main/least/content?id=${encodeURIComponent(contentId)}`;
+    const urlHappy = `https://back.psj2867.com/api/data/exp/most/happy/content?id=${encodeURIComponent(contentId)}`;
+    const urlSad = `https://back.psj2867.com/api/data/exp/most/sad/content?id=${encodeURIComponent(contentId)}`;
 
 
     fetch(url1)
@@ -171,7 +171,7 @@ fetch(urlMost)
     function requestImage(sid, start, end, width, canvasId) {
         let imageData = null;
     
-        fetch(`http://n2.psj2867.com:18080/api/data/screen/image?sid=${sid}`)
+        fetch(`https://back.psj2867.com/api/data/screen/image?sid=${sid}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
