@@ -26,7 +26,7 @@ function validate(userId) {
       .then(data => {
         console.log("id : " + data.id);
         sessionStorage.setItem('userId', data.id);
-        sessionStorage.setItem('useName', data.name);
+        sessionStorage.setItem('userName', userIdInput.value);
         window.location.href = 'index.html';
       });
   }
