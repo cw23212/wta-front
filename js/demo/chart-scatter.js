@@ -56,7 +56,7 @@ function number_format(number, decimals, dec_point, thousands_sep) {
       return s.join(dec);
   }
 
-
+  var emotionUrl;
 
   document.addEventListener("DOMContentLoaded", function () {
     fetch(url)
@@ -65,6 +65,8 @@ function number_format(number, decimals, dec_point, thousands_sep) {
           const sid = data.sid;
           const width = parseInt(data.width);
           const height = parseInt(data.height);
+          emotionUrl = `http://n2.psj2867.com:18080/api/data/exp/heatmap?id=${encodeURIComponent(
+            chapterId)}&x=5&y=15`;
           console.log(width, height);
           
           document.querySelector(".canvas").style.width = `${width + 100}px`;
@@ -75,7 +77,7 @@ function number_format(number, decimals, dec_point, thousands_sep) {
           image.src = `http://n2.psj2867.com:18080/api/data/screen/image?sid=${sid}`;
   
           image.onload = function() {
-            const plugin = {
+           const plugin = {
               id: 'customCanvasBackgroundImage',
               beforeDraw: (chart) => {
                 if (image.complete) {
@@ -86,78 +88,142 @@ function number_format(number, decimals, dec_point, thousands_sep) {
                 }
               }
             };
-  
-            new Chart(ctx, {
-              type: 'scatter',
-              data: {
-                datasets: [{
-                  label: '감정',
-                  backgroundColor: "rgba(78, 115, 223, 0.05)",
-                  borderColor: "rgba(78, 115, 223, 1)",
-                  pointRadius: 5,
-                  pointBackgroundColor: "rgba(251, 80, 80, 1)",
-                  pointBorderColor: "rgba(251, 80, 80, 1)",
-                  pointHoverRadius: 7,
-                  pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
-                  pointHoverBorderColor: "rgba(78, 115, 223, 1)",
-                  pointHitRadius: 10,
-                  pointBorderWidth: 2,
-                  data: [
-                    {x: 1, y: 5, emotion: 'happy'},
-                    {x: 2, y: 3, emotion: 'sad'},
-                    {x: 3, y: 4, emotion: 'neutral'},
-                    {x: 4, y: 2, emotion: 'angry'},
-                    {x: 5, y: 6, emotion: 'test'}
-                  ]
-                }]
-              },
-              plugins: [plugin],
-              options: {
-                maintainAspectRatio: false,
-                scales: {
-                  xAxes: [{
-                    type: 'linear',
-                    position: 'bottom',
-                    gridLines: {
-                      display: true,
-                      drawBorder: false
-                    },
-                    ticks: {
-                      maxTicksLimit: 7
-                    }
-                  }],
-                  yAxes: [{
-                    ticks: {
-                      maxTicksLimit: 5,
-                      padding: 10,
-                      callback: function(value) {
-                        return '$' + value;
-                      }
-                    },
-                    gridLines: {
-                      color: "rgb(234, 236, 244)",
-                      zeroLineColor: "rgb(234, 236, 244)",
-                      drawBorder: false,
-                      borderDash: [2],
-                      zeroLineBorderDash: [2]
-                    }
-                  }],
-                },
-                legend: {
-                  display: false
-                },
-                tooltips: {
-                  callbacks: {
-                    label: function(tooltipItem, data) {
-                      var datasetLabel = data.datasets[tooltipItem.datasetIndex].label || '';
-                      var emotion = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].emotion;
-                      return datasetLabel + ': ' + ' (' + emotion + ')';
-                    }
-                  }
-                }
-              }
-            });
+
+            getEmotionData(plugin);
           };
         })
+
+    function getEmotionData(plugin)
+    {
+      fetch(emotionUrl)
+      .then((response) => response.json())
+      .then((data) => {
+          const emotionData = processEmotionData(data);
+          createEmotionsChart(emotionData, plugin);
+          console.log(data);
+      })
+      .catch((error) => console.error("Error fetching data:", error));
+    }
+    
+    
+    function processEmotionData(data) {
+        const result = [];
+    
+        data.forEach((item) => {
+          var randomXOffset = (Math.random() * 0.1 - 0.05).toFixed(2);
+          var randomYOffset = (Math.random() * 0.05 - 0.025).toFixed(2);
+  
+          let maxEmotion = null;
+          let maxValue = 0;
+  
+          Object.keys(item).forEach((key) => {
+              if (key !== 'x' && key !== 'y' && key !== 'table' && key !== 'le' && item[key] > maxValue) {
+                  maxEmotion = key;
+                  maxValue = item[key];
+              }
+          });
+  
+          result.push({
+              x: parseFloat(item.x) + parseFloat(randomXOffset),
+              y: parseFloat(item.y) + parseFloat(randomYOffset),
+              emotion: maxEmotion,
+              value: maxValue
+          });
+      });
+    
+        return result;
+    }
+    
+    function createEmotionsChart(emotionData, plugin) {
+      const ctx = document.getElementById("myScatterChart").getContext("2d");
+
+      const existingDatasets = {}; 
+
+    emotionData.forEach(item => {
+        const label = item.emotion;
+        const dataset = {
+            label: label,
+            data: [{ x: item.x, y: item.y, value: item.value }],
+            backgroundColor: getBackgroundColor(label),
+            borderColor: getBorderColor(label),
+            pointRadius: 5
+        };
+
+        if (existingDatasets[label]) {
+            existingDatasets[label].data.push({ x: item.x, y: item.y, value: item.value });
+        } else {
+            existingDatasets[label] = dataset;
+        }
+    });
+
+    const datasets = Object.values(existingDatasets);
+  
+      new Chart(ctx, {
+          type: 'scatter',
+          data: { datasets: datasets },
+          plugins: [plugin],
+          options: {
+              maintainAspectRatio: false,
+              scales: {
+                xAxes: [{
+                  gridLines: {
+                      display:false
+                  }
+                }],
+                yAxes: [{
+                    gridLines: {
+                        display:true
+                    }   
+                }],
+              },
+              legend: {
+                  display: true
+              },
+              tooltips: {
+                  callbacks: {
+                      label: function(tooltipItem, data) {
+                          const dataset = data.datasets[tooltipItem.datasetIndex];
+                          const point = dataset.data[tooltipItem.index];
+                          return `${dataset.label}: (값: ${point.value.toFixed(4)})`;
+                      }
+                  }
+              }
+          }
+      });
+  }
+  
+  function getBackgroundColor(emotion) {
+    switch (emotion) {
+        case '기쁨':
+            return "rgba(255, 99, 132, 0.6)"; // 분홍색
+        case '분노':
+            return "rgba(255, 255, 0, 0.6)"; // 뻘건색
+        case '불안':
+            return "rgba(75, 192, 192, 0.6)"; // 초록색
+        case '슬픔':
+            return "rgba(54, 162, 235, 0.6)"; // 파란색
+        case '중립':
+            return "rgba(153, 102, 255, 0.6)"; // 보라색
+        default:
+            return "rgba(0, 0, 0, 0.6)"; // 검은색
+    }
+}
+
+function getBorderColor(emotion) {
+    switch (emotion) {
+        case '기쁨':
+            return "rgba(255, 99, 132, 1)"; // 분홍색
+        case '분노':
+            return "rgba(255, 255, 0, 1)"; // 뻘건색
+        case '불안':
+            return "rgba(75, 192, 192, 1)"; // 초록색
+        case '슬픔':
+            return "rgba(54, 162, 235, 1)"; // 파란색
+        case '중립':
+            return "rgba(153, 102, 255, 1)"; // 보라색
+        default:
+            return "rgba(0, 0, 0, 1)"; // 검은색
+    }
+}
   });
   

@@ -9,10 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const url1 = `http://n2.psj2867.com:18080/api/data/main/views?id=${encodeURIComponent(
     userId
   )}`;
-  const url2 = `http://n2.psj2867.com:18080/api/data/exp/sum/chapter?id=${encodeURIComponent(
-    userId
-  )}`;
-  const url3 = `http://n2.psj2867.com:18080/api/data/main/exit/page?id=${encodeURIComponent(
+  const url2 = `http://n2.psj2867.com:18080/api/data/main/exps?id=${encodeURIComponent(
     userId
   )}`;
 
@@ -27,28 +24,132 @@ document.addEventListener("DOMContentLoaded", function () {
     .catch((error) => console.error("Error fetching data:", error));
 
   function processOnPageData(data) {
-    // Initialize an array to hold processed data
     const result = [];
 
-    // Iterate over the data and extract necessary information
     data.forEach((item) => {
-      // Extracting date and value
       const start = new Date(item._start);
       const date = formatDate(start); // Format date
       const value = item._value;
 
-      // Add data point to the result array
       result.push({
         date: date,
         value: value,
       });
     });
 
-    // Take only the last 5 data points for the chart
     const lastFiveDaysData = result.slice(-5);
 
     return lastFiveDaysData;
   }
+
+  fetch(url2)
+    .then((response) => response.json())
+    .then((data) => {
+        const emotionData = processEmotionData(data);
+        createEmotionsChart(emotionData);
+        console.log(data);
+    })
+    .catch((error) => console.error("Error fetching data:", error));
+
+  function processEmotionData(data) {
+    const result = {
+        dates: [],
+        기쁨: [],
+        분노: [],
+        불안: [],
+        슬픔: [],
+        중립: []
+    };
+
+    data.forEach((item) => {
+        if (item._start) {
+            const start = new Date(item._start);
+            const date = formatDate(start);
+
+            result.dates.push(date);
+            result.기쁨.push(item.기쁨);
+            result.분노.push(item.분노);
+            result.불안.push(item.불안);
+            result.슬픔.push(item.슬픔);
+            result.중립.push(item.중립);
+        }
+    });
+
+    return result;
+}
+
+function formatDate(date) {
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
+
+function createEmotionsChart(data) {
+    var ctx = document.getElementById("emotionsChart").getContext("2d");
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: data.dates,
+            datasets: [
+                {
+                    label: '기쁨',
+                    data: data.기쁨,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1,
+                    fill: false
+                },
+                {
+                    label: '분노',
+                    data: data.분노,
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1,
+                    fill: false
+                },
+                {
+                    label: '불안',
+                    data: data.불안,
+                    borderColor: 'rgba(255, 206, 86, 1)',
+                    borderWidth: 1,
+                    fill: false
+                },
+                {
+                    label: '슬픔',
+                    data: data.슬픔,
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1,
+                    fill: false
+                },
+                {
+                    label: '중립',
+                    data: data.중립,
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    borderWidth: 1,
+                    fill: false
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Date'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Emotion Level'
+                    }
+                }
+            }
+        }
+    });
+}
 
   // Helper function to format date as "YYYY-MM-DD"
   function formatDate(date) {
