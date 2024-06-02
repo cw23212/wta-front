@@ -13,6 +13,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const url2 = `http://n2.psj2867.com:18080/api/data/main/viewer/content?id=${encodeURIComponent(contentId)}`;
     const urlMost = `http://n2.psj2867.com:18080/api/data/main/most/content?id=${encodeURIComponent(contentId)}`;
     const urlLeast = `http://n2.psj2867.com:18080/api/data/main/least/content?id=${encodeURIComponent(contentId)}`;
+    const urlHappy = `http://n2.psj2867.com:18080/api/data/exp/most/happy/content?id=${encodeURIComponent(contentId)}`;
+    const urlSad = `http://n2.psj2867.com:18080/api/data/exp/most/sad/content?id=${encodeURIComponent(contentId)}`;
 
 
     fetch(url1)
@@ -96,6 +98,34 @@ fetch(urlMost)
             requestImage(sid, start, end, width, canvasId);
         })
         .catch(error => console.error('Error fetching data:', error));
+
+        fetch(urlHappy)
+        .then((response) => response.json())
+        .then((data) => {
+          start = parseInt(data.data[0].start);
+          end = parseInt(data.data[0].end);
+          sid = data.file.sid;
+          width = parseInt(data.file.width);
+          height = parseInt(data.file.height);
+          canvasId = "imageHappy";
+          showLoadingAnimation(canvasId);
+          requestImage(sid, start, end, width, canvasId);
+        })
+        .catch((error) => console.error("Error fetching data:", error));
+    
+        fetch(urlSad)
+        .then((response) => response.json())
+        .then((data) => {
+          start = parseInt(data.data[0].start);
+          end = parseInt(data.data[0].end);
+          sid = data.file.sid;
+          width = parseInt(data.file.width);
+          height = parseInt(data.file.height);
+          canvasId = "imageSad";
+          showLoadingAnimation(canvasId);
+          requestImage(sid, start, end, width, canvasId);
+        })
+        .catch((error) => console.error("Error fetching data:", error));
 
     function showLoadingAnimation(canvasId) {
         const canvas = document.createElement('canvas');

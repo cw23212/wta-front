@@ -91,91 +91,109 @@
                   <div id="imageLeast"></div>
                 </div>
               </div>
-
-              <!-- 가장 적게 본 화면 -->
-              <div class="col-xl-4 col-lg-7">
-                <div class="card shadow mb-4">
-                  <!-- Card Header - Dropdown -->
-                  <div
-                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
-                  >
-                    <h6 class="m-0 font-weight-bold text-primary">
-                      가장 감정 변화가 큰 화면
-                    </h6>
-                  </div>
-                  <!-- img body -->
-                  <div style="height: 500px"></div>
-                </div>
-              </div>
             </div>
-            <!-- Content Row -->
 
-            <div class="row d-flex justify-content-center">
-              <!-- Area Chart -->
-              <div class="col-xl-4 col-lg-7">
-                <div class="card shadow mb-4">
-                  <!-- Card Header - Dropdown -->
-                  <div
-                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
-                  >
-                    <h6 class="m-0 font-weight-bold text-primary">
-                      사용자가 머문 시간
-                    </h6>
-                  </div>
-                  <!-- Card Body -->
-                  <div class="card-body">
-                    <div class="chart-area">
-                      <canvas id="timeOnPage"></canvas>
+
+              <div class="row d-flex justify-content-center">
+                <!-- 가장 많이 본 화면 -->
+                <div class="col-xl-4 col-lg-7">
+                  <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div
+                      class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+                    >
+                      <h6 class="m-0 font-weight-bold text-primary">
+                        가장 행복한 감정을 많이 느낀 화면
+                      </h6>
                     </div>
+                    <!-- img body -->
+                    <div id="imageHappy"></div>
                   </div>
                 </div>
-              </div>
-
-              <div class="col-xl-4 col-lg-7">
-                <div class="card shadow mb-4">
-                  <!-- Card Header - Dropdown -->
-                  <div
-                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
-                  >
-                    <h6 class="m-0 font-weight-bold text-primary">
-                      평균 감정 비율
-                    </h6>
-                  </div>
-                  <!-- Card Body -->
-                  <div class="card-body">
-                    <div class="chart-area">
-                      <canvas id="expSumChart"></canvas>
+  
+                <!-- 가장 적게 본 화면 -->
+                <div class="col-xl-4 col-lg-7">
+                  <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div
+                      class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+                    >
+                      <h6 class="m-0 font-weight-bold text-primary">
+                        가장 슬픈 감정을 많이 느낀 화면
+                      </h6>
                     </div>
+                    <!-- img body -->
+                    <div id="imageSad"></div>
                   </div>
                 </div>
-              </div>
-
-              <!-- Pie Chart -->
-              <div class="col-xl-3 col-lg-5">
-                <div class="card shadow mb-4">
-                  <!-- Card Header - Dropdown -->
-                  <div
-                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
-                  >
-                    <h6 class="m-0 font-weight-bold text-primary">이탈율</h6>
-                  </div>
-                  <!-- Card Body -->
-                  <div class="card-body">
-                    <div class="chart-pie pt-4 pb-2">
-                      <canvas id="bounceRate"></canvas>
-                    </div>
-                    <div class="mt-4 text-center small">
-                      <span class="mr-2">
-                        <i class="fas fa-circle text-primary"></i> 이탈
-                      </span>
-                      <span class="mr-2">
-                        <i class="fas fa-circle text-success"></i> 잔류
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
+                        <!-- Content Row -->
+
+                        <div class="row d-flex justify-content-center">
+                          <!-- Area Chart -->
+                          <div class="col-xl-4 col-lg-7">
+                            <div class="card shadow mb-4">
+                              <!-- Card Header - Dropdown -->
+                              <div
+                                class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+                              >
+                                <h6 class="m-0 font-weight-bold text-primary">
+                                  사용자가 머문 시간
+                                </h6>
+                              </div>
+                              <!-- Card Body -->
+                              <div class="card-body">
+                                <div class="chart-area">
+                                  <canvas id="timeOnPage"></canvas>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+            
+                          <div class="col-xl-4 col-lg-7">
+                            <div class="card shadow mb-4">
+                              <!-- Card Header - Dropdown -->
+                              <div
+                                class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+                              >
+                                <h6 class="m-0 font-weight-bold text-primary">
+                                  평균 감정 비율
+                                </h6>
+                              </div>
+                              <!-- Card Body -->
+                              <div class="card-body">
+                                <div class="chart-area">
+                                  <canvas id="expSumChart"></canvas>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+            
+                          <!-- Pie Chart -->
+                          <div class="col-xl-3 col-lg-5">
+                            <div class="card shadow mb-4">
+                              <!-- Card Header - Dropdown -->
+                              <div
+                                class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+                              >
+                                <h6 class="m-0 font-weight-bold text-primary">이탈율</h6>
+                              </div>
+                              <!-- Card Body -->
+                              <div class="card-body">
+                                <div class="chart-pie pt-4 pb-2">
+                                  <canvas id="bounceRate"></canvas>
+                                </div>
+                                <div class="mt-4 text-center small">
+                                  <span class="mr-2">
+                                    <i class="fas fa-circle text-primary"></i> 이탈
+                                  </span>
+                                  <span class="mr-2">
+                                    <i class="fas fa-circle text-success"></i> 잔류
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
           </div>
           <!-- /.container-fluid -->
         </div>

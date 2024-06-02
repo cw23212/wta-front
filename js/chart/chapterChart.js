@@ -21,13 +21,20 @@ document.addEventListener("DOMContentLoaded", function () {
     chapterId
   )}`;
 
+  const urlHappy = `http://n2.psj2867.com:18080/api/data/exp/most/happy/page?id=${encodeURIComponent(
+    chapterId
+  )}`
+
+  const urlSad = `http://n2.psj2867.com:18080/api/data/exp/most/sad/page?id=${encodeURIComponent(
+    chapterId
+  )}`
+
   fetch(url1)
     .then((response) => response.json())
     .then((data) => {
       // Process the data and create the chart
       const processedData = processOnPageData(data);
       createOnPageChart(processedData);
-      console.log(data);
     })
     .catch((error) => console.error("Error fetching data:", error));
 
@@ -67,7 +74,6 @@ document.addEventListener("DOMContentLoaded", function () {
       "surprised",
     ];
     const result = emotionLabels.map((emotion) => data[0][emotion] || 0);
-    console.log(result);
     return result;
   }
 
@@ -75,7 +81,6 @@ document.addEventListener("DOMContentLoaded", function () {
     .then((response) => response.json())
     .then((data) => {
       createBounceRateChart(data);
-      console.log(data);
     })
     .catch((error) => console.error("Error fetching data:", error));
 
@@ -110,6 +115,34 @@ document.addEventListener("DOMContentLoaded", function () {
       width = parseInt(data.file.width);
       height = parseInt(data.file.height);
       canvasId = "imageLeast";
+      showLoadingAnimation(canvasId);
+      requestImage(sid, start, end, width, canvasId);
+    })
+    .catch((error) => console.error("Error fetching data:", error));
+
+    fetch(urlHappy)
+    .then((response) => response.json())
+    .then((data) => {
+      start = parseInt(data.data[0].start);
+      end = parseInt(data.data[0].end);
+      sid = data.file.sid;
+      width = parseInt(data.file.width);
+      height = parseInt(data.file.height);
+      canvasId = "imageHappy";
+      showLoadingAnimation(canvasId);
+      requestImage(sid, start, end, width, canvasId);
+    })
+    .catch((error) => console.error("Error fetching data:", error));
+
+    fetch(urlSad)
+    .then((response) => response.json())
+    .then((data) => {
+      start = parseInt(data.data[0].start);
+      end = parseInt(data.data[0].end);
+      sid = data.file.sid;
+      width = parseInt(data.file.width);
+      height = parseInt(data.file.height);
+      canvasId = "imageSad";
       showLoadingAnimation(canvasId);
       requestImage(sid, start, end, width, canvasId);
     })
