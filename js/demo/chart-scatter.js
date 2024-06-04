@@ -1,7 +1,7 @@
 Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 Chart.defaults.global.defaultFontColor = '#858796';
 const chapterId = sessionStorage.getItem("chapterId");
-const url = `http://n2.psj2867.com:18080/api/data/screen/meta?id=${encodeURIComponent(
+const url = `https://back.psj2867.com/api/data/screen/meta?id=${encodeURIComponent(
   chapterId
 )}`;
 
@@ -65,7 +65,7 @@ function number_format(number, decimals, dec_point, thousands_sep) {
           const sid = data.sid;
           const width = parseInt(data.width);
           const height = parseInt(data.height);
-          emotionUrl = `http://n2.psj2867.com:18080/api/data/exp/heatmap?id=${encodeURIComponent(
+          emotionUrl = `https://back.psj2867.com/api/data/exp/heatmap?id=${encodeURIComponent(
             chapterId)}&x=5&y=15`;
           console.log(width, height);
           
@@ -74,7 +74,7 @@ function number_format(number, decimals, dec_point, thousands_sep) {
   
           const ctx = document.getElementById("myScatterChart").getContext('2d');
           const image = new Image();
-          image.src = `http://n2.psj2867.com:18080/api/data/screen/image?sid=${sid}`;
+          image.src = `https://back.psj2867.com/api/data/screen/image?sid=${sid}`;
   
           image.onload = function() {
            const plugin = {
