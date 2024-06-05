@@ -65,13 +65,11 @@ document.addEventListener("DOMContentLoaded", function () {
   // Process JSON data to match the chart's data format
   function processExpSumData(data) {
     const emotionLabels = [
-      "neutral",
-      "happy",
-      "sad",
-      "angry",
-      "fearful",
-      "disgusted",
-      "surprised",
+      "기쁨",
+      "분노",
+      "불안",
+      "슬픔",
+      "중립",
     ];
     const result = emotionLabels.map((emotion) => data[0][emotion] || 0);
     return result;
@@ -350,7 +348,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var myBarChart = new Chart(ctx, {
       type: "bar",
       data: {
-        labels: ["무표정", "행복", "슬픔", "화남", "두려움", "역겨움", "놀람"],
+        labels: ["기쁨", "분노", "불안", "슬픔", "중립"],
         datasets: [
           {
             label: "Emotion Levels",
